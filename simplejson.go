@@ -311,12 +311,7 @@ func (j *Json) MustString(args ...string) string {
 		log.Panicf("MustString() received too many arguments %d", len(args))
 	}
 
-	s, err := j.String()
-	if err == nil {
-		return s
-	}
-
-	return def
+	return MustString(j.Interface(), def)
 }
 
 // MustStringArray guarantees the return of a `[]string` (with optional default)
@@ -336,12 +331,7 @@ func (j *Json) MustStringArray(args ...[]string) []string {
 		log.Panicf("MustStringArray() received too many arguments %d", len(args))
 	}
 
-	a, err := j.StringArray()
-	if err == nil {
-		return a
-	}
-
-	return def
+	return MustStringArray(j.Interface(), def)
 }
 
 // MustInt guarantees the return of an `int` (with optional default)
@@ -359,12 +349,8 @@ func (j *Json) MustInt(args ...int) int {
 		log.Panicf("MustInt() received too many arguments %d", len(args))
 	}
 
-	i, err := j.Int()
-	if err == nil {
-		return i
-	}
-
-	return def
+	ret := MustInt64(j.Interface(), int64(def))
+	return int(ret)
 }
 
 // MustFloat64 guarantees the return of a `float64` (with optional default)
@@ -382,12 +368,7 @@ func (j *Json) MustFloat64(args ...float64) float64 {
 		log.Panicf("MustFloat64() received too many arguments %d", len(args))
 	}
 
-	f, err := j.Float64()
-	if err == nil {
-		return f
-	}
-
-	return def
+	return MustFloat64(j.Interface(), def)
 }
 
 // MustBool guarantees the return of a `bool` (with optional default)
@@ -428,33 +409,5 @@ func (j *Json) MustInt64(args ...int64) int64 {
 		log.Panicf("MustInt64() received too many arguments %d", len(args))
 	}
 
-	i, err := j.Int64()
-	if err == nil {
-		return i
-	}
-
-	return def
-}
-
-// MustUInt64 guarantees the return of an `uint64` (with optional default)
-//
-// useful when you explicitly want an `uint64` in a single value return context:
-//     myFunc(js.Get("param1").MustUint64(), js.Get("optional_param").MustUint64(5150))
-func (j *Json) MustUint64(args ...uint64) uint64 {
-	var def uint64
-
-	switch len(args) {
-	case 0:
-	case 1:
-		def = args[0]
-	default:
-		log.Panicf("MustUint64() received too many arguments %d", len(args))
-	}
-
-	i, err := j.Uint64()
-	if err == nil {
-		return i
-	}
-
-	return def
+	return MustInt64(j.Interface(), def)
 }
